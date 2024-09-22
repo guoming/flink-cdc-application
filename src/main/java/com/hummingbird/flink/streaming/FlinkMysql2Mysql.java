@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 
 public class FlinkMysql2Mysql implements  Serializable {
 
+    String JobName;
     String targetTablePrimaryKey;
     String targetUrl;
     String targetUser;
@@ -45,7 +46,8 @@ public class FlinkMysql2Mysql implements  Serializable {
 
     private void loadProperties(Properties properties) {
 
-        
+
+        JobName = properties.getProperty("app.name");
         sourceDbList = properties.getProperty("app.source.db-list");
         sourceTableList = properties.getProperty("app.source.table-list");
         sourceTablePrimaryKey = properties.getProperty("app.source.table.primary-key");
@@ -105,7 +107,7 @@ public class FlinkMysql2Mysql implements  Serializable {
 
         splitStream.addSink(new MySQLSink());
 
-        env.execute("Flink CDC Migration Job");
+        env.execute(JobName);
 
     }
 
